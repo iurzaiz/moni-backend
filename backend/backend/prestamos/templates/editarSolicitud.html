@@ -1,0 +1,83 @@
+{% extends "./base.html" %}
+{% block body %}
+
+<div class="col-md-6 text-muted m-4 p-5 border-radius" style="background-color:#BFD8F8; border-radius:20px; ">
+    <h1 class="display-3 mx-auto">Editar solicitud</h1>
+
+    <form action="/editarSolicitud/" method="POST">{% csrf_token %}
+      <div class="row my-2">
+        <div class="input-group input-group-lg">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroup-sizing-lg">Nombre</span>
+          </div>
+          <input type="text" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm" id="txtNombre" value="{{solicitud.nombre}}" name="txtNombre">
+        </div>
+      </div>
+
+      <div class="row my-2">
+        <div class="input-group input-group-lg">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroup-sizing-lg">Apellido</span>
+          </div>
+          <input type="text" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm" id="txtApellido" value="{{solicitud.apellido}}" name="txtApellido">
+        </div>
+      </div>
+
+      <div class="row my-2">
+        <div class="input-group input-group-lg">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroup-sizing-lg">DNI</span>
+          </div>
+          <input type="number" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm" id="txtDni" value="{{solicitud.dni}}" name="txtDni" readonly>
+        </div>
+      </div>
+
+      <div class="row my-2">
+        <div class="input-group input-group-lg">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroup-sizing-lg">Email</span>
+          </div>
+          <input type="email" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm" id="txtEmail" value="{{solicitud.email}}" name="txtEmail">
+        </div>
+      </div>
+
+    
+      <fieldset class="form-group">
+        <div class="row">
+          <legend class="col-form-label col-md-12 mt-5 ">Sexo</legend>
+          <div class="col-md-12">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="gridRadios" value="Hombre" id="gridRadios1" value="Hombre" checked>
+              <label class="form-check-label" for="gridRadios1">
+                Hombre
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="Mujer">
+              <label class="form-check-label" for="gridRadios2">
+                Mujer
+              </label>
+            </div>
+            <div class="form-check disabled">
+              <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios3" value="Indefinido">
+              <label class="form-check-label" for="gridRadios3">
+                Indefinido
+              </label>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+      
+      
+      <div class="row my-2">
+        <div class="input-group input-group-lg">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroup-sizing-lg">Monto</span>
+          </div>
+          <input type="number" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm" id="txtMonto" value="{{solicitud.monto}}" name="txtMonto">
+        </div>
+      </div>
+      <button class="my-5" style="background-color:#5493E7;" color="black" elevation="5" outlined large type="submit">Guardar cambios</button>
+    </form>
+  </div>
+{% endblock %}

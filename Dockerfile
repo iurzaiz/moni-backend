@@ -8,5 +8,6 @@ COPY requirements.txt /code/
 
 
 RUN python -m pip install -r requirements.txt
+RUN python -m pip install requests
 
 COPY . /code/

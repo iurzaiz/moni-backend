@@ -1,8 +1,18 @@
 from django.urls import path
 from rest_framework import routers
-from .views import SolicitudPrestamoViewSet
+from . import views
 
-router= routers.SimpleRouter()      # Esta clase va a definir las rutas para nuestro modelo, define las rutas get, post put, delete, etc
-router.register('solicitudes', SolicitudPrestamoViewSet)
 
-urlpatterns = router.urls
+
+urlpatterns = [
+    path('gestionSolicitudes/', views.solicitudes),
+    path('', views.home),
+    path('registrarSolicitud/',views.registrarSolicitud),
+    path('eliminarSolicitud/<dni>',views.eliminarSolicitud),
+    path('editarSolicitud/',views.editarSolicitud),
+    path('edicionSolicitud/<dni>',views.edicionSolicitud),
+    path('loginPage/', views.loginPage),
+    path('login/', views.loginMio)
+
+]
+ 

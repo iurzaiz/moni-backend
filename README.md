@@ -17,3 +17,5 @@ También se debe desarrollar un sitio de administración en el que se puedan ver
 Para correr el proyecto ejecutar docker-compose up
 
 Hay un usuario precargado el cual tiene de nombre de usuario y contraseña 'admin'
+
+Copiar archivo example.env y renombrarlo como .env, ponerle las variables necesarias
