@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -20,7 +21,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = ')0x36eu$83%mr@xj)%e2t%e$!qbqj6e#^4fn)*9do+8(wzy$51'
+SECRET_KEY = ')0x36eu$83%mr@xj)%e2t%e$!qbqj6e#^4fn)*9do+8(wzy$51'       #Esto deberia ir en archivo .env
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -37,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'backend.prestamos',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
@@ -76,9 +79,9 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',                         #Esto deberia ser dinamico
-        'USER': 'postgres',                         #Esto deberia ser dinamico
-        'PASSWORD':'postgres',                      #Esto deberia ser dinamico
+        'NAME': 'postgres',                         #Esto deberia ir en archivo .env
+        'USER': 'postgres',                         #Esto deberia ir en archivo .env
+        'PASSWORD':'postgres',                      #Esto deberia ir en archivo .env
         'HOST': 'db',
         'PORT': 5432
     }
@@ -115,7 +118,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+#USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
