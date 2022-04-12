@@ -18,5 +18,4 @@ class SolicitudPrestamo(models.Model):
         string= 'Nombre' + self.nombre + ' ' + self.apellido + '\n' + \
                 'Monto solicitado:'+ str(self.monto) + '\n' + \
                 'Estado:' + estado
-
         return string

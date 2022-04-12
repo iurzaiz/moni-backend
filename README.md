@@ -19,3 +19,10 @@ Para correr el proyecto ejecutar docker-compose up
 Hay un usuario precargado el cual tiene de nombre de usuario y contraseña 'admin'
 
 Copiar archivo example.env y renombrarlo como .env, ponerle las variables necesarias
+
+Para levantar el front es necesario la extension llamada "Moesif Orign & CORS Changer"
+Enlace a la extensión desde Google Chrome: https://chrome.google.com/webstore/detail/moesif-origin-cors-change/digfbfaphojjndkpccljibejjbppifbc
+Habilitarla para la pagina en cuestion
+
+Crear superusuario con 
+sudo docker-compose run web python ./backend/manage.py createsuperuser

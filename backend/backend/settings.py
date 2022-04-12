@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
+from datetime import timedelta
 import os
 
 from django.urls import reverse_lazy
@@ -41,7 +42,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'backend.prestamos',
-    'rest_framework'
+    'rest_framework',
+    'rest_framework.authtoken',
+    'backend.userAuthentication',
+    'corsheaders'
+
 ]
 
 MIDDLEWARE = [
@@ -52,6 +57,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
 
 ROOT_URLCONF = 'backend.urls'
@@ -108,6 +115,20 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'backend.prestamos.permissions.IsPostOrIsAuthenticated',
+    ),
+    
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
+
+SIMPLE_JWT = {
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=15),
+    'ROTATE_REFRESH_TOKENS': True,
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
@@ -129,3 +150,7 @@ USE_L10N = True
 STATIC_URL = '/static/'
 
 LOGIN_REDIRECT_URL = reverse_lazy('/gestionSolicitudes')
+
+AUTH_USER_MODEL= 'userAuthentication.UserProfile'
+
+CORS_ORIGIN_ALLOW_ALL = True
