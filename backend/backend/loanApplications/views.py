@@ -5,10 +5,10 @@ from django.http import JsonResponse
 import requests
 from django.shortcuts import redirect, render
 from rest_framework import viewsets
-from backend.prestamos.permissions import IsPostOrIsAuthenticated
+from backend.loanApplications.permissions import IsPostOrIsAuthenticated
 
-from .models import SolicitudPrestamo
-from .serializers import SolicitudPrestamoSerializer
+from .models import LoanApplication
+from .serializers import LoanApplicationSerializer
 from django.contrib.auth import *
 from django.contrib import messages
 from rest_framework.views import APIView
@@ -16,9 +16,9 @@ from rest_framework.response import Response
 from rest_framework import mixins, generics
 from rest_framework import status
 
-from backend.prestamos import serializers
+from backend.loanApplications import serializers
 
-def validarPrestamo(dni):
+def validateLoan(dni):
     BASE_URL= "https://api.moni.com.ar/api/v4/scoring/pre-score"
     API_KEY =  os.getenv('API_KEY')
     url_request = f"{BASE_URL}/{dni}"
@@ -37,10 +37,10 @@ def validarPrestamo(dni):
         raise e
     return response
 
-class SolicitudPrestamoApiView(mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):
+class LoanApplicationApiView(mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):
     # API view de Solicitudes prestasmo
-    queryset = SolicitudPrestamo.objects.all()
-    serializer_class = serializers.SolicitudPrestamoSerializer
+    queryset = LoanApplication.objects.all()
+    serializer_class = serializers.LoanApplicationSerializer
     permission_classes = [IsPostOrIsAuthenticated,]
 
     def get(self, request, *args, **kwargs):
@@ -49,14 +49,14 @@ class SolicitudPrestamoApiView(mixins.ListModelMixin, mixins.CreateModelMixin, g
 
     def post(self, request, *args, **kwargs):
         request.data._mutable = True
-        request.data["estaAprobado"] = validarPrestamo(request.data['dni'])
+        request.data["estaAprobado"] = validateLoan(request.data['dni'])
         request.data._mutable = False
-        estaAprobado = validarPrestamo(request.data['dni'])
-        solicitud = SolicitudPrestamo.objects.create(nombre=request.data['nombre'], apellido=request.data['apellido'], monto=request.data['monto'],email=request.data['email'], dni=request.data['dni'], genero=request.data['genero'], estaAprobado=estaAprobado)
+        estaAprobado = validateLoan(request.data['dni'])
+        solicitud = LoanApplication.objects.create(nombre=request.data['nombre'], apellido=request.data['apellido'], monto=request.data['monto'],email=request.data['email'], dni=request.data['dni'], genero=request.data['genero'], estaAprobado=estaAprobado)
          
         return Response({'method': 'POST'})
 
-class SolicitudDetalleApiView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = SolicitudPrestamo.objects.all()
-    serializer_class = SolicitudPrestamoSerializer
+class ApplicationDetailApiView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = LoanApplication.objects.all()
+    serializer_class = LoanApplicationSerializer
     permission_class = [IsPostOrIsAuthenticated]

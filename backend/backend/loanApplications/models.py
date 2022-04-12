@@ -1,7 +1,7 @@
 from django.db import models
 
 # Creo la clase SolicitudPrestamo el cual va a tener dni, nombre y apellido, genero, email y monto solicitado.
-class SolicitudPrestamo(models.Model):
+class LoanApplication(models.Model):
     dni = models.IntegerField(null=False)
     nombre = models.CharField(max_length=50)
     apellido = models.CharField(max_length=50)

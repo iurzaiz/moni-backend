@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'backend.prestamos',
+    'backend.loanApplications',
     'rest_framework',
     'rest_framework.authtoken',
     'backend.userAuthentication',
@@ -117,7 +117,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
-        'backend.prestamos.permissions.IsPostOrIsAuthenticated',
+        'backend.loanApplications.permissions.IsPostOrIsAuthenticated',
     ),
     
     'DEFAULT_AUTHENTICATION_CLASSES': (

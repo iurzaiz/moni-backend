@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from backend.backend.prestamos.models import SolicitudPrestamo
+from backend.backend.loanApplications.models import SolicitudPrestamo
 
 # Create your tests here.
 

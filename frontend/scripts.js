@@ -174,7 +174,7 @@ function RegistrarSolicitud(dni, nombre, apellido, genero, email, monto){
 	 	body: formdata,
 	   };
 	  
-	   fetch(host + "/api/solicitudes/solicitudes/", requestOptions)
+	   fetch(host + "/api/applications/", requestOptions)
 	 	.then(response => response.text())
 	 	.then(function(){
 			window.alert("Solicitud registrada")
@@ -190,7 +190,7 @@ function RegistrarSolicitud(dni, nombre, apellido, genero, email, monto){
 
 function ListarSolicitudes(){
 	$.ajax({
-		url: host+"/api/solicitudes/solicitudes/",
+		url: host+"/api/applications/",
 		headers: {'Authorization': 'Bearer '+localStorage.getItem('access_token')},
 		statusCode: {
 			401:function() { 
@@ -237,7 +237,7 @@ function EliminarSolicitud(id){
 
 	if (window.confirm("Seguro que desea eliminar la solicitud?")==true){
 		$.ajax({
-			url: host+'/api/solicitudes/solicitudes/'+id,
+			url: host+'/api/applications/'+id,
 			type: 'DELETE',
 			headers: {'Authorization': 'Bearer '+localStorage.getItem('access_token')},
 			statusCode: {
@@ -274,7 +274,7 @@ function EditarSolicitud(id){
 function RellenarCamposSolicitud(){
 	var id = getParameterByName('id');
 	$.ajax({
-		url: host+'/api/solicitudes/solicitudes/'+id,
+		url: host+'/api/applications/'+id,
 		type: 'GET',
 		headers: {'Authorization': 'Bearer '+localStorage.getItem('access_token')},
 		statusCode: {
@@ -349,7 +349,7 @@ function SubmitEditarSolicitud(){
 	}
 
 	$.ajax({
-		url: host+'/api/solicitudes/solicitudes/'+id,
+		url: host+'/api/applications/'+id,
 		type: 'PUT',
 		headers: {'Authorization': 'Bearer '+localStorage.getItem('access_token')},
 		data: data,

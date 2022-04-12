@@ -1,7 +1,7 @@
 
 from rest_framework.response import Response
 from rest_framework import status, viewsets
-from backend.prestamos import permissions
+from backend.loanApplications import permissions
 from backend.userAuthentication import models
 from rest_framework import mixins, generics, serializers
 from django.contrib.auth import authenticate, login
