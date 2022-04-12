@@ -189,48 +189,45 @@ function RegistrarSolicitud(dni, nombre, apellido, genero, email, monto){
 ------------------------------------------------------------------------*/
 
 function ListarSolicitudes(){
-	//header = new Headers()
-	//header.append('Authorization', 'Bearer ' + localStorage.getItem('access_token'))
-	header= {
-		'Content-Type': 'application/json',
-		'WWW-Authenticate': 'Bearer ' + localStorage.getItem('access_token'),
-	  }
-	console.log(header)
+	$.ajax({
+		url: host+"/api/solicitudes/solicitudes/",
+		headers: {'Authorization': 'Bearer '+localStorage.getItem('access_token')},
+		statusCode: {
+			401:function() { 
+				alert("No estas logueado"); 
+				window.location.href= "./login.html"
+			},
+		  },
+		success: function (result) {
+			console.log(result)
+			//res = JSON.parse(result)
+			res = result
+	 		var contenido = "";
 
-	var requestOptions = {
-		method: 'GET',
-		headers: header,
-		mode: 'no-cors',
-	};
-
-	fetch(host+"/api/solicitudes/solicitudes/",requestOptions)
-		.then(response => response.text())
-		.then(result => {
-			res = JSON.parse(result)
-			var contenido = "";
-
-			for (var i=0; i< res.length; i++)
-			{
-				var s = res[i];
-                contenido += ('<tr>'+
-                                    '<td>'+s.dni+'</td>'+
-                                    '<td>'+s.nombre+'</td>'+
-                                    '<td>'+s.apellido+'</td>'+
-                                    '<td>'+s.monto+'</td>'+
-                                    '<td>'+s.email+'</td>'+
-                                    '<td>'+s.genero+'</td>'+
-                                    '<td>'+s.estaAprobado+'</td>'+
-									'<td><button onclick="'+"EditarSolicitud("+s.id+")"+'" class="btn btn-info">Editar</button></td>'+
-                                    '<td><button onclick="'+"EliminarSolicitud("+s.id+")"+'" class="btn btn-danger btnEliminar">Eliminar</button></td>'+
+	 		for (var i=0; i< res.length; i++)
+	 		{
+	 			var s = res[i];
+                 contenido += ('<tr>'+
+                                     '<td>'+s.dni+'</td>'+
+                                     '<td>'+s.nombre+'</td>'+
+                                     '<td>'+s.apellido+'</td>'+
+                                     '<td>'+s.monto+'</td>'+
+                                     '<td>'+s.email+'</td>'+
+                                     '<td>'+s.genero+'</td>'+
+                                     '<td>'+s.estaAprobado+'</td>'+
+	 								'<td><button onclick="'+"EditarSolicitud("+s.id+")"+'" class="btn btn-info">Editar</button></td>'+
+                                     '<td><button onclick="'+"EliminarSolicitud("+s.id+")"+'" class="btn btn-danger btnEliminar">Eliminar</button></td>'+
 									
-                                '</tr>')
-			}
+                                 '</tr>')
+	 		}
 			
-			$('#ContenidoTabla').append(contenido);
-					
-		})
-		.catch(error => console.log('error', error)); 
-		
+	 		$('#ContenidoTabla').append(contenido);
+		 },
+		 error: function (error) {
+			
+		 }
+	});
+
 }
 
 /*----------------------------------------------------------------------
@@ -239,22 +236,24 @@ function ListarSolicitudes(){
 function EliminarSolicitud(id){
 
 	if (window.confirm("Seguro que desea eliminar la solicitud?")==true){
-		var formdata = new FormData();
-
-		var requestOptions = {
-			method: 'DELETE',
-			body: formdata,
-			redirect: 'follow'
-		};
-
-		fetch(host+'/api/solicitudes/solicitudes/'+id, requestOptions)
-			.then(response => response.json())
-			.then(function(){	
+		$.ajax({
+			url: host+'/api/solicitudes/solicitudes/'+id,
+			type: 'DELETE',
+			headers: {'Authorization': 'Bearer '+localStorage.getItem('access_token')},
+			statusCode: {
+				401:function() { 
+					alert("No estas logueado"); 
+					window.location.href= "./login.html"
+				},
+			  },
+			success: function (result) {
 				alert("solicitud eliminada")
 				window.location.href= "./admin.html"
-			})
-			.catch(error => console.log('error', error));
-	
+			 },
+			 error: function (error) {
+				console.log('error: ', error)
+			 }
+		});
 	}
 	else{
 		return
@@ -273,27 +272,33 @@ function EditarSolicitud(id){
  Esta funcion rellena los campos de la pagina mi perfil"
 ------------------------------------------------------------------------*/
 function RellenarCamposSolicitud(){
-
 	var id = getParameterByName('id');
-	var requestOptions = {
-		method: 'GET',
-		};
-	fetch(host +"/api/solicitudes/solicitudes/"+id, requestOptions)
-	.then(response => response.text())
-	.then(result => {
-		s = JSON.parse(result)
+	$.ajax({
+		url: host+'/api/solicitudes/solicitudes/'+id,
+		type: 'GET',
+		headers: {'Authorization': 'Bearer '+localStorage.getItem('access_token')},
+		statusCode: {
+			401:function() { 
+				alert("No estas logueado"); 
+				window.location.href= "./login.html"
+			},
+		  },
+		success: function (result) {
+			s = result
 
-		$('#txtNombre').val(s.nombre);
-		$('#txtApellido').val(s.apellido);
-		$('#txtDni').val(s.dni);
-		$('#txtEmail').val(s.email);
-		$('#cmbSexo').val(s.genero);
-		$('#txtMonto').val(s.monto);
-		$('#cmdEstaAprobado').val(s.estaAprobado);	
-	})
-	.catch(error => console.log('error', error));
+			$('#txtNombre').val(s.nombre);
+			$('#txtApellido').val(s.apellido);
+			$('#txtDni').val(s.dni);
+			$('#txtEmail').val(s.email);
+			$('#cmbSexo').val(s.genero);
+			$('#txtMonto').val(s.monto);
+			$('#cmdEstaAprobado').val(s.estaAprobado);	
+		 },
+		 error: function (error) {
+			console.log('error: ', error)
+		 }
+	});
 }
-
 /*----------------------------------------------------------------------
  Esta funcion obtiene el parametro de la url
 ------------------------------------------------------------------------*/
@@ -334,32 +339,37 @@ function SubmitEditarSolicitud(){
 		
 	}
 
-	var formdata = new FormData();
-	formdata.append('id', id);
-	formdata.append('dni', dni);
-	formdata.append('nombre', nombre);
-	formdata.append('apellido', apellido);
-	formdata.append('genero', genero);
-	formdata.append('email', email);
-	formdata.append('monto', monto);
-	formdata.append('estaAprobado', estaAprobado);
+	let data = {"nombre":nombre,
+				"apellido":apellido,
+				"dni":dni,
+				"email":email,
+				"genero":genero,
+				"monto":monto,
+				"estaAprobado":estaAprobado,
+	}
 
-	var requestOptions = {
-		method: 'PUT',
-		body: formdata,
-		redirect: 'follow'
-	};
-
-	fetch(host + "/api/solicitudes/solicitudes/"+id, requestOptions)
-	.then(response => response.text())
-	.then(function(){
-		window.alert("solicitud modificada")
-		window.location.href='./admin.html';
-	})
-	.catch(error => {
-		console.log('error', error)
-		window.alert("No se pudo modificar la solicitud")
+	$.ajax({
+		url: host+'/api/solicitudes/solicitudes/'+id,
+		type: 'PUT',
+		headers: {'Authorization': 'Bearer '+localStorage.getItem('access_token')},
+		data: data,
+		statusCode: {
+			401:function() { 
+				alert("No estas logueado"); 
+				window.location.href= "./login.html"
+			},
+		  },
+		success: function (result) {
+			window.alert("solicitud modificada")
+			window.location.href='./admin.html';	
+		 },
+		 error: function (error) {
+			console.log('error', error)
+			window.alert("No se pudo modificar la solicitud")
+		 }
 	});
+
+	
 
 }
 
