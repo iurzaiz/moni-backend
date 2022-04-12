@@ -32,7 +32,6 @@ function Login(){
 		.then(response => response.text())
 		.then(result => {
 			res = JSON.parse(result);
-			console.log(res)
 			if (res.refresh!=undefined){
 				console.log("guardo tokens")
 				GuardarTokens(res.access, res.refresh, lastDate);
@@ -81,7 +80,6 @@ function ValidarSolicitud(){
 	email= $('#txtEmail').val();
 	genero=$('#cmbSexo').val();
 	monto=$('#txtMonto').val();
-	console.log(dni)
 	
 	if (nombre.trim() ==""){
 		$('#txtNombre').css("position", "relative")
@@ -95,22 +93,35 @@ function ValidarSolicitud(){
 	}else{
 		$('#txtNombre').css("background-color", "#fff")
 	}
-	if (isNaN(dni)){
-		$('#txtDni').css("background-color", "#fff")
-		$('#txtDni').css("position", "relative")
-		$('#txtDni').css("background-color", "#ffdddd")
+
+	if (apellido.trim() ==""){
+		$('#txtApellido').css("position", "relative")
+		$('#txtApellido').css("background-color", "#ffdddd")
 		.animate({ left: "-10px" }, 100).animate({ left: "10px" }, 100)
 		.animate({ left: "-10px" }, 100).animate({ left: "10px" }, 100)
 		.animate({ left: "0px" }, 100);
 
-		alert("El campo dni está vacío o no es valido")
+		alert("El campo apellido está vacío")
 		return
 	}else{
-		$('#txtDni').css("background-color", "#fff")
+		$('#txtApellido').css("background-color", "#fff")
+	}
+
+	if (email.trim() ==""){
+		$('#txtEmail').css("position", "relative")
+		$('#txtEmail').css("background-color", "#ffdddd")
+		.animate({ left: "-10px" }, 100).animate({ left: "10px" }, 100)
+		.animate({ left: "-10px" }, 100).animate({ left: "10px" }, 100)
+		.animate({ left: "0px" }, 100);
+
+		alert("El campo email está vacío")
+		return
+	}else{
+		$('#txtEmail').css("background-color", "#fff")
 	}
 	
-	if (parseInt(dni)>=1000000 && parseInt(dni)<=100000000){
 
+	if (parseInt(dni)<=1000000 || parseInt(dni)>=100000000){
 		$('#txtDni').css("background-color", "#fff")
 		$('#txtDni').css("position", "relative")
 		$('#txtDni').css("background-color", "#ffdddd")
@@ -122,7 +133,6 @@ function ValidarSolicitud(){
 		return
 	}else{
 		$('#txtDni').css("background-color", "#fff")
-		
 	}
 	
 	if (isNaN(monto)){
@@ -181,7 +191,6 @@ function RegistrarSolicitud(dni, nombre, apellido, genero, email, monto){
 function ListarSolicitudes(){
 	header = new Headers()
 	header.append('Authorization', 'Bearer ' + localStorage.getItem('access_token'))
-	console.log(header)
 
 	var requestOptions = {
 		method: 'GET',
@@ -202,7 +211,6 @@ function ListarSolicitudes(){
 		// })
 		.then(response => response.text())
 		.then(result => {
-			console.log(result)
 			res = JSON.parse(result)
 			var contenido = "";
 
@@ -237,7 +245,6 @@ function EliminarSolicitud(id){
 
 	if (window.confirm("Seguro que desea eliminar la solicitud?")==true){
 		var formdata = new FormData();
-		formdata.append("id", id);
 
 		var requestOptions = {
 			method: 'DELETE',
@@ -245,11 +252,11 @@ function EliminarSolicitud(id){
 			redirect: 'follow'
 		};
 
-		fetch(host+'/api/solicitudes/solicitudes/', requestOptions)
+		fetch(host+'/api/solicitudes/solicitudes/'+id, requestOptions)
 			.then(response => response.json())
 			.then(function(){	
-
-				location.reload()
+				alert("solicitud eliminada")
+				window.location.href= "./admin.html"
 			})
 			.catch(error => console.log('error', error));
 	
@@ -276,11 +283,10 @@ function RellenarCamposSolicitud(){
 	var requestOptions = {
 		method: 'GET',
 		};
-	fetch(host +"/api/solicitudes/solicitudes/"+id+"", requestOptions)
+	fetch(host +"/api/solicitudes/solicitudes/"+id, requestOptions)
 	.then(response => response.text())
 	.then(result => {
-		console.log(result);
-		s = JSON.parse(result)[0]
+		s = JSON.parse(result)
 
 		$('#txtNombre').val(s.nombre);
 		$('#txtApellido').val(s.apellido);
@@ -334,28 +340,27 @@ function SubmitEditarSolicitud(){
 	}
 
 	var formdata = new FormData();
-
-	 formdata.append('id', id);
-	 formdata.append('dni', dni);
-	 formdata.append('nombre', nombre);
-	 formdata.append('apellido', apellido);
-	 formdata.append('genero', genero);
-	 formdata.append('email', email);
-	 formdata.append('monto', monto);
-	 formdata.append('estaAprobado', estaAprobado);
+	formdata.append('id', id);
+	formdata.append('dni', dni);
+	formdata.append('nombre', nombre);
+	formdata.append('apellido', apellido);
+	formdata.append('genero', genero);
+	formdata.append('email', email);
+	formdata.append('monto', monto);
+	formdata.append('estaAprobado', estaAprobado);
 
 	var requestOptions = {
 		method: 'PUT',
 		body: formdata,
+		redirect: 'follow'
 	};
 
-	fetch(host + "/api/solicitudes/solicitudes/", requestOptions)
+	fetch(host + "/api/solicitudes/solicitudes/"+id, requestOptions)
 	.then(response => response.text())
 	.then(function(){
 		window.alert("solicitud modificada")
 		window.location.href='./admin.html';
 	})
-	//.then(result => console.log(result))
 	.catch(error => {
 		console.log('error', error)
 		window.alert("No se pudo modificar la solicitud")

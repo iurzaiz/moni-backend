@@ -149,7 +149,7 @@ USE_L10N = True
 
 STATIC_URL = '/static/'
 
-LOGIN_REDIRECT_URL = reverse_lazy('/gestionSolicitudes')
+LOGIN_REDIRECT_URL = reverse_lazy('/gestionarPrestamos')
 
 AUTH_USER_MODEL= 'userAuthentication.UserProfile'
 
