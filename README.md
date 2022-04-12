@@ -1,7 +1,9 @@
 # moni-backend
 Prueba para entrar a trabajar en la empresa Moni S.A
 
-El proyecto esta dockerizado y desarrollado en Django y Vue con Postgres
+El proyecto esta dockerizado y desarrollado en Django con Postgres
+
+Dentro de la carpeta frontend se encuentra el archvio index.html
 
 Consigna: 
 Se debe desarrollar sitio web en el que se registran pedido de préstamos de usuarios que acceden a el.
