@@ -66,8 +66,3 @@ class SolicitudDetalleApiView(generics.RetrieveUpdateDestroyAPIView):
     queryset = SolicitudPrestamo.objects.all()
     serializer_class = SolicitudPrestamoSerializer
     permission_class = [IsPostOrIsAuthenticated]
-
-    # def delete(self, request, pk=None):
-    #     solicitud= SolicitudPrestamo.objects.get(id=pk)
-    #     solicitud.delete()
-    #     return Response({'method': 'DELETE'})

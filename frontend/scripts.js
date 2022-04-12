@@ -189,26 +189,21 @@ function RegistrarSolicitud(dni, nombre, apellido, genero, email, monto){
 ------------------------------------------------------------------------*/
 
 function ListarSolicitudes(){
-	header = new Headers()
-	header.append('Authorization', 'Bearer ' + localStorage.getItem('access_token'))
+	//header = new Headers()
+	//header.append('Authorization', 'Bearer ' + localStorage.getItem('access_token'))
+	header= {
+		'Content-Type': 'application/json',
+		'WWW-Authenticate': 'Bearer ' + localStorage.getItem('access_token'),
+	  }
+	console.log(header)
 
 	var requestOptions = {
 		method: 'GET',
-		//headers: header,
-		//mode: 'no-cors',
+		headers: header,
+		mode: 'no-cors',
 	};
 
 	fetch(host+"/api/solicitudes/solicitudes/",requestOptions)
-		// .then(response => {
-		// 	response.text()
-		// 	if(response.status!==401){
-		// 		//window.location.href="./login.html"
-		// 	}
-		// 	if(response.status!==200){
-		// 		alert("hubo un error al cargar las solicitudes")
-		// 	}
-			
-		// })
 		.then(response => response.text())
 		.then(result => {
 			res = JSON.parse(result)
