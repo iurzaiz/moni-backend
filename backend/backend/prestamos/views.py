@@ -47,7 +47,6 @@ class SolicitudPrestamoApiView(mixins.ListModelMixin, mixins.CreateModelMixin, g
         #Retorna las solicitudes de prestamo
         return self.list(request, *args, **kwargs)
 
-
     def post(self, request, *args, **kwargs):
         request.data._mutable = True
         request.data["estaAprobado"] = validarPrestamo(request.data['dni'])
@@ -56,11 +55,6 @@ class SolicitudPrestamoApiView(mixins.ListModelMixin, mixins.CreateModelMixin, g
         solicitud = SolicitudPrestamo.objects.create(nombre=request.data['nombre'], apellido=request.data['apellido'], monto=request.data['monto'],email=request.data['email'], dni=request.data['dni'], genero=request.data['genero'], estaAprobado=estaAprobado)
          
         return Response({'method': 'POST'})
-
-
-    
-
-    
 
 class SolicitudDetalleApiView(generics.RetrieveUpdateDestroyAPIView):
     queryset = SolicitudPrestamo.objects.all()
