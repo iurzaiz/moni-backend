@@ -15,7 +15,7 @@ urlpatterns = [
     path('login/', views.loginMio),
 
     path('solicitudes/', views.SolicitudPrestamoApiView.as_view()),
-    path('solicitudes/<id>', views.SolicitudPrestamoApiView.as_view()),
+    path('solicitudes/<pk>', views.SolicitudDetalleApiView.as_view()),
 
 ]
  

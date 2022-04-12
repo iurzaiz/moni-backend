@@ -47,11 +47,6 @@ class SolicitudPrestamoApiView(mixins.ListModelMixin, mixins.CreateModelMixin, g
         #Retorna las solicitudes de prestamo
         return self.list(request, *args, **kwargs)
 
-    def getWithId(self, request, id):
-        #Retorna las solicitudes de prestamo con id 
-        solicitud= SolicitudPrestamo.objects.get(id=id)
-        return solicitud
-
 
     def post(self, request, *args, **kwargs):
         request.data._mutable = True
@@ -82,6 +77,11 @@ class SolicitudPrestamoApiView(mixins.ListModelMixin, mixins.CreateModelMixin, g
         solicitud= SolicitudPrestamo.objects.get(id=request.data['id'])
         solicitud.delete()
         return Response({'method': 'DELETE'})
+
+class SolicitudDetalleApiView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = SolicitudPrestamo.objects.all()
+    serializer_class = SolicitudPrestamoSerializer
+    permission_class = [IsPostOrIsAuthenticated]
 
 
 #BORRAR
